@@ -48,7 +48,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     api project(path: ':xmztutils')
-    api project(path: ':tagviews')
 
     // 沉浸式，基础依赖包，必须要依赖
     api 'com.gyf.immersionbar:immersionbar:3.0.0'
