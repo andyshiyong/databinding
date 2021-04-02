@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="dp_05">0.5dp</dimen>
+    <dimen name="dp_025">0.25dp</dimen>
+    <dimen name="dp_1">1dp</dimen>
+    <dimen name="dp_1_px">1px</dimen>
+    <!-- 状态栏默认高度-->
+</resources>

@@ -1,0 +1,16 @@
+<resources>
+    <!-- dialog样式 -->
+    <style name="dialog_loading" parent="@android:style/Theme.Dialog">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFrame">@null</item> <!--Dialog的windowFrame框为无-->
+        <item name="android:windowContentOverlay">@null</item>
+
+        <item name="android:windowIsFloating">true</item>    <!--是否浮在界面上-->
+        <item name="android:windowIsTranslucent">true</item> <!--是否半透明-->
+        <item name="android:windowNoTitle">true</item>       <!--是否有标题-->
+        <item name="android:windowBackground">@android:color/transparent</item> <!--窗口背景色透明-->
+        <item name="android:backgroundDimEnabled">false</item> <!--背景是否模糊显示-->
+    </style>
+
+
+</resources>
