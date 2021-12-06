@@ -1,4 +1,4 @@
-include ':xmztutils'
+include ':utils'
 include ':DataBinding'
 include ':app'
 rootProject.name = "databinding"
