@@ -8,9 +8,9 @@ import android.net.Uri;
 import android.os.Environment;
 
 import com.bumptech.glide.Glide;
-import com.andy.binding.rxjava2.AsyncUtil;
-import com.andy.utils.AppUtils;
-import com.andy.utils.ToastUtils;
+import com.kk.databinding.rxjava2.AsyncUtil;
+import com.kk.utils.AppUtils;
+import com.kk.utils.ToastUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

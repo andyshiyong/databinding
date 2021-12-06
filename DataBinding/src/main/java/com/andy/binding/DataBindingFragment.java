@@ -2,7 +2,9 @@ package com.andy.binding;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +14,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.andy.binding.vm.BaseViewModel;
+import com.andy.utils.IsFastClick;
+import com.andy.utils.ToastUtils;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -38,7 +41,6 @@ public abstract class DataBindingFragment<VM extends BaseViewModel, DB extends V
                     .subscribe(consumer);
         }
     }
-    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     protected VM viewModel;
     public DB dataBinding;
 
@@ -62,7 +64,7 @@ public abstract class DataBindingFragment<VM extends BaseViewModel, DB extends V
             viewModel = createViewModel();
             viewModel.init(this,dataBinding);
         }
-        if(isVisible()){
+        if(menuVisible&&!isInitData){
             isInitData=true;
             initData();
         }
@@ -94,39 +96,63 @@ public abstract class DataBindingFragment<VM extends BaseViewModel, DB extends V
     @Override
     public void onDestroy() {
         // when destroy UI
-        if (mCompositeDisposable != null) {
-            mCompositeDisposable.clear(); // clear时网络请求会随即cancel
-            mCompositeDisposable = null;
-        }
         super.onDestroy();
+        if (viewModel != null) {
+            viewModel.onCleared(); // clear时网络请求会随即cancel
+        }
     }
+    private boolean menuVisible;
     @Override
     public void setMenuVisibility(boolean menuVisible) {
         super.setMenuVisibility(menuVisible);
+        this.menuVisible=menuVisible;
         if(dataBinding!=null&&!isInitData&&menuVisible){
             isInitData=true;
             initData();
         }
     }
+    public LoadingDialig mLoadingDialig;
     @Override
-    public abstract void showLoading();
-
-    @Override
-    public abstract void hideLoading();
-    @Override
-    public abstract void showLoadFail(String msg);
-    @Override
-    public CompositeDisposable getCompositeDisposable() {
-        if(mCompositeDisposable==null){
-            mCompositeDisposable = new CompositeDisposable();
+    public void showLoading() {
+        if (mLoadingDialig == null) {
+            mLoadingDialig = new LoadingDialig(getContext());
         }
-        return mCompositeDisposable;
+        mLoadingDialig.show();
     }
+    @Override
+    public void hideLoading() {
+        if (mLoadingDialig != null) {
+            mLoadingDialig.dismiss();
+        }
+    }
+    @Override
+    public void showLoadFail(String msg) {
+        if(TextUtils.isEmpty(msg)){
+            return;
+        }
+        if(msg.contains("timeout")){
+            ToastUtils.showShort("网络连接超时");
+        }else {
+            ToastUtils.showShort(msg);
+        }
+    }
+
     @Override
     public void activityFinish() {
         Activity activity=getActivity();
         if(activity!=null){
             activity.finish();
+        }
+    }
+
+    /**
+     * 不带数据的界面跳转方法
+     * @param c 需要跳转至的界面
+     */
+    public void startToActivity(Class c) {
+        if(IsFastClick.isFastClick()) {
+            Intent intent = new Intent(getContext(), c);
+            startActivity(intent);
         }
     }
 }

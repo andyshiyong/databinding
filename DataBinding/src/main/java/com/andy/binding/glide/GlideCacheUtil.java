@@ -4,12 +4,11 @@ import android.content.Context;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import com.andy.binding.rxjava2.AsyncUtil;
+import com.andy.utils.AppUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.cache.ExternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
-import com.andy.binding.rxjava2.AsyncUtil;
-import com.andy.utils.AppUtils;
-
 import java.io.File;
 import java.math.BigDecimal;
 

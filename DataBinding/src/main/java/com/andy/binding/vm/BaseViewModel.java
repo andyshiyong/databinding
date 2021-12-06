@@ -14,6 +14,7 @@ import com.andy.binding.IView;
 import java.lang.reflect.ParameterizedType;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * AndroidViewModel 基类
@@ -27,6 +28,10 @@ public class BaseViewModel<DB extends ViewDataBinding,T> extends AndroidViewMode
     public void init(IView mView,DB dataBinding) {
         this.mView = mView;
         this.dataBinding = dataBinding;
+    }
+
+    public DB getDataBinding() {
+        return dataBinding;
     }
     //生命周期观察的数据
     private MutableLiveData<T> liveObservableData = new MutableLiveData<>();
@@ -58,9 +63,11 @@ public class BaseViewModel<DB extends ViewDataBinding,T> extends AndroidViewMode
         Class<T> tClass = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         return tClass;
     }
-
+    public void addDisposable(Disposable disposableObserver) {
+        mDisposable.add(disposableObserver);
+    }
     @Override
-    protected void onCleared() {
+    public void onCleared() {
         super.onCleared();
         mDisposable.clear();
     }

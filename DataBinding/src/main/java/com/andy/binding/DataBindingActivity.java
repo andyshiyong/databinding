@@ -11,12 +11,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
+import com.andy.binding.vm.BaseViewModel;
+import com.andy.utils.IsFastClick;
+import com.andy.utils.ToastUtils;
 import com.gyf.immersionbar.ImmersionBar;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.andy.binding.vm.BaseViewModel;
-import com.andy.utils.ToastUtils;
 
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 
 
@@ -36,8 +36,6 @@ public abstract class DataBindingActivity<VM extends BaseViewModel, DB extends V
         rxPermission.request(permissions)
                 .subscribe(consumer);
     }
-    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-
     protected VM viewModel;
     public DB dataBinding;
     public ImmersionBar immersionBar;
@@ -75,6 +73,7 @@ public abstract class DataBindingActivity<VM extends BaseViewModel, DB extends V
                     .statusBarDarkFont(isDarkFont, 0.2f); //原理：如果当前设备支持状态栏字体变色，会设置状态栏字体为黑色，如果当前设备不支持状态栏字体变色，会使当前状态栏加上透明度，否则不执行透明度
             immersionBar.init();
         }
+        // 注入 QMUISkinManager
         initData();
     }
 
@@ -98,9 +97,18 @@ public abstract class DataBindingActivity<VM extends BaseViewModel, DB extends V
      * @param c 需要跳转至的界面
      */
     public void startToActivity(Class c) {
-        Intent intent = new Intent(this, c);
-        startActivity(intent);
+        if(IsFastClick.isFastClick()) {
+            Intent intent = new Intent(this, c);
+            startActivity(intent);
+        }
     }
+
+    public void startToActivity(Intent intent) {
+        if(IsFastClick.isFastClick()) {
+            startActivity(intent);
+        }
+    }
+
     public LoadingDialig mLoadingDialig;
     @Override
     public void showLoading() {
@@ -128,14 +136,6 @@ public abstract class DataBindingActivity<VM extends BaseViewModel, DB extends V
     }
 
     @Override
-    public CompositeDisposable getCompositeDisposable() {
-        if(mCompositeDisposable==null){
-            mCompositeDisposable = new CompositeDisposable();
-        }
-        return mCompositeDisposable;
-    }
-
-    @Override
     protected void onStart() {
         super.onStart();
     }
@@ -155,10 +155,9 @@ public abstract class DataBindingActivity<VM extends BaseViewModel, DB extends V
     @Override
     protected void onDestroy() {
         // when destroy UI
-        if (mCompositeDisposable != null) {
-            mCompositeDisposable.clear(); // clear时网络请求会随即cancel
-            mCompositeDisposable = null;
-        }
         super.onDestroy();
+        if(viewModel!=null){
+            viewModel.onCleared();
+        }
     }
 }
