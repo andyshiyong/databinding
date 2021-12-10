@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+    </data>
+    <com.shiyong.tagviews.TagContainerLayout
+        android:id="@+id/tagcontainerLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        app:container_max_lines="2"
+        app:container_background_color="#00000000"
+        app:container_border_color="#3300ff00"
+        app:container_border_radius="0dp"
+        app:container_border_width="4dp"
+        app:container_enable_drag="true"
+        app:horizontal_interval="10dp"
+        app:tag_clickable="false"
+        app:tag_theme="random"
+        app:vertical_interval="10dp" />
+</layout>
